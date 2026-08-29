@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+:root {
+  --ground: #17130f; /* warm near-black */
+  --surface: #fbf7f0; /* ivory, the invoice itself */
+  --surface-2: #f0eae0;
+  --ink: #1e1913;
+  --muted: #7c7064;
+  --rule: #ddd4c6;
+  --paid: #1d6b4c; /* deep green */
+  --due: #b9741c; /* amber */
+  --overdue: #a83b1c; /* rust */
+}
+
+@theme inline {
+  --color-ground: var(--ground);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
+  --color-paid: var(--paid);
+  --color-due: var(--due);
+  --color-overdue: var(--overdue);
+  --font-sans: var(--font-plex);
+  --font-serif: var(--font-fraunces);
+}
+
+html {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+body {
+  background: var(--ground);
+  color: var(--surface);
+  font-family: var(--font-plex), "IBM Plex Sans", sans-serif;
+}
+
+h1,
+h2,
+h3,
+.font-serif {
+  font-family: var(--font-fraunces), Fraunces, serif;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--surface);
+}
+
+input,
+textarea,
+select,
+button {
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  border-radius: 0;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
