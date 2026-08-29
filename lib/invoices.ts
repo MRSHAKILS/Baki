@@ -248,10 +248,17 @@ export async function getInvoiceSummaries(ids: string[]) {
   const sql = await ensureDb();
   const rows = await sql`
     SELECT id, client_name, description, amount_cents, currency,
-           due_at, tone, status, paid_at, COALESCE(views, 0) AS views, last_viewed_at
+           due_at, tone, status, paid_at, COALESCE(views, 0) AS views, last_viewed_at,
+           promised_at
     FROM invoices
     WHERE id = ANY(${ids})
     ORDER BY issued_at DESC
   `;
   return rows;
+}
+
+/** The client commits to a date. Escalation pauses until it passes. */
+export async function promisePayment(id: string, at: Date): Promise<void> {
+  const sql = await ensureDb();
+  await sql`UPDATE invoices SET promised_at = ${at.toISOString()} WHERE id = ${id} AND status <> 'paid'`;
 }

@@ -84,3 +84,44 @@ export function getEscalation(tone: Tone, dueAt: Date, now = new Date()): Escala
     stages: buildStages(tone, dueAt),
   };
 }
+
+export type PromiseState =
+  | { kind: "none" }
+  | { kind: "promised"; at: Date; daysAway: number }
+  | { kind: "broken"; at: Date; daysLate: number };
+
+/**
+ * A client who commits to a date buys silence until that date. Miss it and the
+ * ladder does not resume where it paused — it resumes one register colder,
+ * because a broken promise is worse than an unanswered invoice.
+ */
+export function promiseState(promisedAt: Date | null | undefined, now = new Date()): PromiseState {
+  if (!promisedAt) return { kind: "none" };
+  const days = calendarDaysPastDue(promisedAt, now);
+  if (days <= 0) return { kind: "promised", at: promisedAt, daysAway: Math.abs(days) };
+  return { kind: "broken", at: promisedAt, daysLate: days };
+}
+
+/** Escalation adjusted for a promise: paused while it holds, harsher once broken. */
+export function getEscalationWithPromise(
+  tone: Tone,
+  dueAt: Date,
+  promisedAt: Date | null | undefined,
+  now = new Date(),
+): { escalation: Escalation; promise: PromiseState; paused: boolean } {
+  const promise = promiseState(promisedAt, now);
+  const escalation = getEscalation(tone, dueAt, now);
+
+  if (promise.kind === "promised") {
+    return { escalation: { ...escalation, register: null, stageIndex: null }, promise, paused: true };
+  }
+
+  if (promise.kind === "broken") {
+    const order: Register[] = ["cordial", "firm", "cold", "final"];
+    const at = escalation.register ? order.indexOf(escalation.register) : 1;
+    const harder = order[Math.min(order.length - 1, Math.max(at + 1, 2))];
+    return { escalation: { ...escalation, register: harder }, promise, paused: false };
+  }
+
+  return { escalation, promise, paused: false };
+}

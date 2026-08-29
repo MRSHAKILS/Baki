@@ -15,6 +15,8 @@ export type Invoice = {
   tone: Tone;
   status: Status;
   paid_at: Date | null;
+  promised_at?: Date | null;
+  promise_broken?: boolean;
   views?: number;
   last_viewed_at?: Date | null;
 };

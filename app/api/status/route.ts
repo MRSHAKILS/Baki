@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getInvoiceSummaries } from "@/lib/invoices";
-import { calendarDaysPastDue, getEscalation } from "@/lib/escalation";
+import { calendarDaysPastDue, getEscalationWithPromise } from "@/lib/escalation";
 import { isTone } from "@/lib/types";
 import { templateCopy } from "@/lib/copy";
 
@@ -23,7 +23,9 @@ export async function POST(request: Request) {
       const dueAt = new Date(row.due_at as string);
       const paid = row.status === "paid";
       const daysPastDue = paid ? 0 : calendarDaysPastDue(dueAt, now);
-      const escalation = paid ? null : getEscalation(tone, dueAt, now);
+      const promisedAt = row.promised_at ? new Date(row.promised_at as string) : null;
+      const resolved = paid ? null : getEscalationWithPromise(tone, dueAt, promisedAt, now);
+      const escalation = resolved?.escalation ?? null;
       return {
         id: row.id,
         client_name: row.client_name,
@@ -38,6 +40,9 @@ export async function POST(request: Request) {
           : null,
         days_past_due: daysPastDue,
         register: escalation?.register ?? null,
+        promised_at: promisedAt ? promisedAt.toISOString() : null,
+        promise_state: resolved?.promise.kind ?? "none",
+        paused: resolved?.paused ?? false,
         // The exact wording for the stage this invoice has reached, so the
         // freelancer can send it from wherever they already talk to the client.
         message:

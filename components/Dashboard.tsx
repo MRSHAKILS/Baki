@@ -22,10 +22,22 @@ type Row = {
   register: string | null;
   due_at: string;
   message: string | null;
+  promise_state?: "none" | "promised" | "broken";
+  promised_at?: string | null;
 };
 
 function state(row: Row): { text: string; tone: string } {
   if (row.status === "paid") return { text: "Paid", tone: "text-paid" };
+  if (row.promise_state === "promised" && row.promised_at) {
+    const when = new Date(row.promised_at).toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "short",
+    });
+    return { text: `Promised ${when}`, tone: "text-due" };
+  }
+  if (row.promise_state === "broken") {
+    return { text: "Promise broken", tone: "text-overdue" };
+  }
   if (row.days_past_due > 0) {
     return {
       text: `${row.days_past_due} day${row.days_past_due === 1 ? "" : "s"} overdue`,

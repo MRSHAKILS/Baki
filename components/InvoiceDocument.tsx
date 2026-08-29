@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CopyLink } from "@/components/CopyLink";
 import { LadderPreview } from "@/components/LadderPreview";
+import { PromiseDate } from "@/components/PromiseDate";
 import { OverdueClock } from "@/components/OverdueClock";
 import { reminderCopy } from "@/lib/copy";
 import { getEscalation, REGISTER_LABELS } from "@/lib/escalation";
@@ -134,6 +135,20 @@ export async function InvoiceDocument({ invoice, shareUrl }: Props) {
           </a>
         )}
       </div>
+
+      {!paid ? (
+        <div className="mt-6 border-t border-rule pt-6">
+          {invoice.promised_at ? (
+            <p className="text-[13px] leading-relaxed text-muted">
+              Payment promised for{" "}
+              <span className="text-ink">{formatDate(new Date(invoice.promised_at))}</span>.
+              Reminders are paused until then.
+            </p>
+          ) : (
+            <PromiseDate id={invoice.id} />
+          )}
+        </div>
+      ) : null}
 
       <div className="mt-12">
         <LadderPreview

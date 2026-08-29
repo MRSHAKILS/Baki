@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { dollarsToCents, parseDateInput } from "@/lib/format";
 import { makeInvoiceId } from "@/lib/ids";
-import { createInvoiceRecord, markInvoicePaid } from "@/lib/invoices";
+import { createInvoiceRecord, markInvoicePaid, promisePayment } from "@/lib/invoices";
 import { isTone } from "@/lib/types";
 
 function asString(value: FormDataEntryValue | null): string {
@@ -52,5 +52,13 @@ export async function confirmPayment(formData: FormData) {
   const id = asString(formData.get("id"));
   if (!id) redirect("/");
   await markInvoicePaid(id);
+  redirect(`/invoice/${id}`);
+}
+
+export async function promiseDate(formData: FormData) {
+  const id = asString(formData.get("id"));
+  const when = parseDateInput(asString(formData.get("promised_at")));
+  if (!id || !when) redirect(id ? `/invoice/${id}` : "/");
+  await promisePayment(id, when);
   redirect(`/invoice/${id}`);
 }
