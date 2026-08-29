@@ -19,6 +19,18 @@
 
 ---
 
+---
+
+**An invoicing tool built around the part freelancers actually avoid: the follow-up.**
+
+|  |  |
+|---|---|
+| **The tone is decided in advance** | You choose how hard to push when you send the invoice — four registers, three schedules. No deciding how impolite to be while you are annoyed. |
+| **It writes each follow-up** | Ready to copy, or to open in WhatsApp or email, where these conversations actually happen. |
+| **The client can answer back** | They can commit to a payment date. The ladder pauses until it passes, then resumes colder. |
+| **You can see if they opened it** | The gap between unseen and ignored is the gap between waiting and chasing. |
+| **And what actually reaches you** | Outstanding totals estimate what survives Payoneer and upay fees — in Bangladesh the invoice total is not the number that matters. |
+
 ## The problem
 
 *Baki* — বাকি — is Bangla for **outstanding, still owed**.
