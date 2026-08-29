@@ -1,0 +1,32 @@
+# Keeps the deployment warm without keeping Neon awake.
+#
+# Neon's free tier bills compute hours and suspends after a few minutes idle, so
+# pinging every couple of minutes would burn the monthly allowance and take the
+# database offline entirely. Every 15 minutes keeps Vercel's function warm and
+# gives a continuous uptime signal while letting Neon sleep in between.
+#
+# GitHub's scheduler is best-effort and can run late under load. That is fine
+# here: this is a warm-up, not a heartbeat anything depends on.
+
+name: Keep warm
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ping the app
+        run: |
+          set -euo pipefail
+          URL="https://baki-chi.vercel.app"
+          CODE=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 30 --retry 2 --retry-delay 5 "$URL")
+          echo "$URL -> $CODE"
+          if [ "$CODE" != "200" ]; then
+            echo "::error::Expected 200, got $CODE"
+            exit 1
+          fi
