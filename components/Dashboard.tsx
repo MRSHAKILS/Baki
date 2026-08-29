@@ -136,7 +136,7 @@ export function Dashboard() {
                       </span>
                     ) : null}
                   </td>
-                  <td className="py-5 pr-6 text-[13px] tabular-nums text-muted">
+                  <td className="py-5 pr-6 text-[13px] whitespace-nowrap tabular-nums text-muted">
                     {row.views > 0 ? `${row.views}\u00d7` : "not yet"}
                   </td>
                   <td className="py-5 text-right font-serif text-[19px] tracking-tight tabular-nums">

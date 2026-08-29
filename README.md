@@ -47,24 +47,24 @@ because it is uncomfortable.** Baki takes the discomfort out by deciding in adva
 <tr>
 <td width="50%" valign="top">
 
-**The client's view**
+**The overview**
 
-A live overdue counter, the current stage of the ladder, and the exact wording that
-goes with it. The page itself gets colder as the debt ages.
+What you are owed, what is late, and — the useful part — whether the client has actually
+opened the invoice. Per device, no account.
 
 </td>
 <td width="50%" valign="top">
 
-**The whole ladder, upfront**
+**The client's view**
 
-The freelancer sees every stage and its date before sending — so choosing a tone is a
-decision made once, calmly, instead of four separate uncomfortable ones later.
+A live overdue counter, the current stage of the ladder, and the wording that goes with
+it. The document itself gets colder as the debt ages.
 
 </td>
 </tr>
 <tr>
+<td width="50%"><img src="docs/04-dashboard.png" alt="The Baki overview showing outstanding, overdue and collected totals"></td>
 <td width="50%"><img src="docs/02-overdue.png" alt="An overdue invoice for $4,200 showing a live counter and a final notice"></td>
-<td width="50%"><img src="docs/03-ladder.png" alt="The escalation ladder showing all stages and dates"></td>
 </tr>
 </table>
 
@@ -95,6 +95,15 @@ invoice always produces the same ladder, and there is no scheduler state to drif
 A model writes the copy when `OPENROUTER_API_KEY` is set. Without it, the templates
 above are used and the product behaves identically. **The model is never load-bearing.**
 
+## Pages
+
+| Route | |
+|---|---|
+| `/` | What the product is, the ladder, and three example invoices |
+| `/new` | Create an invoice and get its link |
+| `/dashboard` | What you are owed, what is late, what has been opened |
+| `/invoice/[id]` | What the client sees |
+
 ## Pricing
 
 **$9/month.** One freelancer, unlimited invoices.
@@ -110,11 +119,17 @@ Built in one sitting. Three things work completely, and everything else was cut 
 purpose:
 
 **Built:** invoice creation → public link · the client-facing invoice page with live
-overdue state · the escalation ladder, previewable in full
+overdue state · the escalation ladder, previewable in full · an overview of what you are
+owed · client-open tracking
 
-**Deliberately not built:** authentication, a dashboard, multi-currency, recurring
-invoices, PDF export, and real scheduled email delivery. The ladder is *shown* rather
-than *sent*, because the mechanic is what needed proving, not the SMTP.
+**Deliberately not built:** authentication, multi-currency, recurring invoices, PDF
+export, and real scheduled email delivery. The ladder is *shown* rather than *sent*,
+because the mechanic is what needed proving, not the SMTP.
+
+**On history without accounts.** Baki has no login, so the invoices you create are
+remembered in `localStorage` on the device that created them and their live status is
+fetched by id. Private to that browser, nothing shared between visitors, and the overview
+falls back to demo data when the device is new.
 
 ### On payments
 
