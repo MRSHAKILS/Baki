@@ -141,6 +141,57 @@ paid. Swapping in a live Stripe Payment Link is a one-line change in
 
 ---
 
+## Architecture
+
+```mermaid
+flowchart TB
+    subgraph browser["Freelancer's browser"]
+        NEW["/new<br/>create an invoice"]
+        DASH["/dashboard<br/>overview"]
+        LS[("localStorage<br/>invoice ids")]
+    end
+
+    subgraph client["Client's browser"]
+        INV["/invoice/[id]<br/>the document"]
+        PAY["/invoice/[id]/pay<br/>test-mode checkout"]
+    end
+
+    subgraph server["Next.js on Vercel"]
+        ACT["server action<br/>createInvoice"]
+        API["POST /api/status<br/>batch state"]
+        ESC["escalation.ts<br/>stage derived from<br/>due date + tone"]
+        COPY["copy.ts<br/>reminder wording"]
+    end
+
+    DB[("Neon Postgres<br/>invoices")]
+    LLM(["OpenRouter<br/>optional"])
+
+    NEW -->|form| ACT
+    ACT -->|insert| DB
+    ACT -->|redirect ?new=1| INV
+    INV -.->|remembers id| LS
+    LS -->|ids| DASH
+    DASH -->|ids| API
+    API --> DB
+    API --> ESC
+    INV -->|increment views| DB
+    INV --> ESC
+    ESC --> COPY
+    COPY -.->|falls back to templates| LLM
+    INV --> PAY
+    PAY -->|mark paid| DB
+
+    classDef store fill:#1D6B4C22,stroke:#1D6B4C,color:#F4EFE5
+    classDef optional stroke-dasharray: 4 3
+    class DB,LS store
+    class LLM optional
+```
+
+**Two things this makes visible.** Escalation state is *derived*, never stored — the same
+invoice always produces the same ladder, and there is no scheduler state to drift out of
+sync. And the model sits on a dashed edge: `copy.ts` falls back to templates, so removing
+OpenRouter changes the wording and nothing else.
+
 ## Stack
 
 | | |

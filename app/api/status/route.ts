@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getInvoiceSummaries } from "@/lib/invoices";
 import { calendarDaysPastDue, getEscalation } from "@/lib/escalation";
 import { isTone } from "@/lib/types";
+import { templateCopy } from "@/lib/copy";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -37,6 +38,16 @@ export async function POST(request: Request) {
           : null,
         days_past_due: daysPastDue,
         register: escalation?.register ?? null,
+        // The exact wording for the stage this invoice has reached, so the
+        // freelancer can send it from wherever they already talk to the client.
+        message:
+          escalation?.register && daysPastDue >= 0
+            ? templateCopy({
+                register: escalation.register,
+                description: String(row.description),
+                daysPastDue,
+              })
+            : null,
       };
     });
 
