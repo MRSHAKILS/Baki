@@ -70,6 +70,23 @@ it. The document itself gets colder as the debt ages.
 
 ---
 
+## The client can answer back
+
+Chasing is one-directional, which is why it fails. So the invoice gives the client a
+second option beside paying: **commit to a date.**
+
+```
+Payment promised for 12 September. Reminders are paused until then.
+```
+
+While the promise holds, the ladder stops entirely — no follow-ups, no reddening
+document. That silence is worth something to the client, which is what makes committing
+attractive rather than ignorable.
+
+If the date passes without payment, the ladder does not resume where it paused. It
+resumes **one register colder**, with a floor of `COLD`, because a broken promise is worse
+than an unanswered invoice. The overview marks it `Promise broken`.
+
 ## Baki writes it. You send it.
 
 Every follow-up on the overview has a **Chase** action. It reveals the exact wording for
@@ -150,7 +167,7 @@ purpose:
 **Built:** invoice creation → public link · the client-facing invoice page with live
 overdue state · the escalation ladder, previewable in full · an overview of what you are
 owed · client-open tracking · one-click chase via copy, WhatsApp or email · a net-of-fees
-estimate for Bangladeshi freelancers
+estimate for Bangladeshi freelancers · a client-side promised date that pauses the ladder
 
 **Deliberately not built:** authentication, multi-currency, recurring invoices, PDF
 export, and real scheduled email delivery. The ladder is *shown* rather than *sent*,
