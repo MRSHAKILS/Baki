@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { forgetAll, readHistory } from "@/lib/history";
 import { formatMoney } from "@/lib/format";
 import { CountUp } from "@/components/CountUp";
+import { ChaseActions } from "@/components/ChaseActions";
+import { estimateNetCents, FEE_TOTAL_PCT } from "@/lib/fees";
 
 const DEMO_IDS = ["bk_exlate", "bk_exdue2", "bk_expaid"];
 
@@ -19,6 +21,7 @@ type Row = {
   days_past_due: number;
   register: string | null;
   due_at: string;
+  message: string | null;
 };
 
 function state(row: Row): { text: string; tone: string } {
@@ -103,7 +106,13 @@ export function Dashboard() {
       ) : null}
 
       <div className="mb-14 grid gap-x-10 gap-y-8 sm:grid-cols-3">
-        <Stat label="Outstanding" cents={outstanding} index={0} />
+        <div>
+          <Stat label="Outstanding" cents={outstanding} index={0} />
+          <p className="mt-2 text-[12px] leading-relaxed text-muted">
+            ≈ {formatMoney(estimateNetCents(outstanding))} after Payoneer and upay fees (
+            {FEE_TOTAL_PCT}%)
+          </p>
+        </div>
         <Stat
           label={`Overdue · ${overdue.length}`}
           cents={overdueTotal}
@@ -117,9 +126,9 @@ export function Dashboard() {
         <table className="w-full min-w-[560px] border-collapse text-left">
           <thead>
             <tr className="border-b border-surface/25">
-              {["Invoice", "Client", "State", "Opened", "Amount"].map((h) => (
+              {["Invoice", "Client", "State", "Opened", "Amount", ""].map((h) => (
                 <th
-                  key={h}
+                  key={h || "chase"}
                   className={`pb-3 text-[11px] font-normal tracking-[0.16em] text-muted uppercase ${
                     h === "Amount" ? "text-right" : ""
                   }`}
@@ -155,8 +164,17 @@ export function Dashboard() {
                   <td className="py-5 pr-6 text-[13px] whitespace-nowrap tabular-nums text-muted">
                     {row.views > 0 ? `${row.views}\u00d7` : "not yet"}
                   </td>
-                  <td className="py-5 text-right font-serif text-[19px] tracking-tight tabular-nums">
+                  <td className="py-5 pr-6 text-right font-serif text-[19px] tracking-tight tabular-nums">
                     {formatMoney(row.amount_cents, row.currency)}
+                  </td>
+                  <td className="py-5 align-top">
+                    {row.status !== "paid" && row.message ? (
+                      <ChaseActions
+                        message={row.message}
+                        clientName={row.client_name}
+                        description={row.description}
+                      />
+                    ) : null}
                   </td>
                 </tr>
               );
