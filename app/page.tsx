@@ -55,7 +55,38 @@ export default async function HomePage() {
         </Link>
       </div>
 
-      <section className="enter" style={{ ["--i" as string]: 3 }}>
+
+      <section
+        className="enter mb-16 border-t border-surface/15 pt-8"
+        style={{ ["--i" as string]: 3 }}
+      >
+        <dl className="grid gap-x-12 gap-y-7 sm:grid-cols-2">
+          {[
+            [
+              "It writes the follow-up",
+              "At every stage Baki has the wording ready. Copy it, or open it in WhatsApp or email.",
+            ],
+            [
+              "The client can answer back",
+              "They can commit to a date instead of paying today. The ladder pauses until it passes, then resumes colder.",
+            ],
+            [
+              "You can see if they opened it",
+              "Every invoice counts client opens, so you know the difference between unseen and ignored.",
+            ],
+            [
+              "And what actually reaches you",
+              "Outstanding totals carry an estimate of what survives Payoneer and upay fees.",
+            ],
+          ].map(([term, detail]) => (
+            <div key={term}>
+              <dt className="font-serif text-[19px] leading-snug tracking-tight">{term}</dt>
+              <dd className="mt-2 text-[14px] leading-relaxed text-muted">{detail}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+      <section className="enter" style={{ ["--i" as string]: 4 }}>
         <h2 className="text-[12px] tracking-[0.18em] text-muted uppercase">Examples</h2>
         <p className="mt-3 max-w-md text-[14px] leading-relaxed text-surface/70">
           Three invoices to open as a client would. No form required.

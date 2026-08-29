@@ -73,7 +73,7 @@ export function exampleInvoices(now = new Date()) {
       tone: "gentle" as const,
       status: "sent" as const,
       paid_at: null,
-      label: "due in 2 days — nothing has fired yet",
+      label: "promised for a date — the ladder is paused",
     },
     {
       id: "bk_exlate",
