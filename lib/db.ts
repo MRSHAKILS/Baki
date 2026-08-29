@@ -42,6 +42,14 @@ export async function ensureDb(): Promise<Sql> {
   await sql`ALTER TABLE invoices ADD COLUMN IF NOT EXISTS promised_at timestamptz`;
   await sql`ALTER TABLE invoices ADD COLUMN IF NOT EXISTS promise_broken boolean NOT NULL DEFAULT false`;
 
+  await sql`
+    CREATE TABLE IF NOT EXISTS rate_limits (
+      bucket text PRIMARY KEY,
+      hits integer NOT NULL DEFAULT 0,
+      expires_at timestamptz NOT NULL
+    )
+  `;
+
   prepared = true;
   return sql;
 }

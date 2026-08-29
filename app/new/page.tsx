@@ -27,9 +27,14 @@ export default async function NewInvoicePage({
       </header>
 
       <section className="bg-surface px-6 py-10 text-ink sm:px-12 sm:py-14">
-        {params.error ? (
+        {params.error === "rate" ? (
           <p className="mb-6 text-[14px] text-overdue">
-            Check the fields and try again. Amount must be a number greater than zero.
+            That is a lot of invoices in one hour. Try again shortly.
+          </p>
+        ) : params.error ? (
+          <p className="mb-6 text-[14px] text-overdue">
+            Check the fields and try again. Amount must be a number greater than zero, and
+            the description must be under 500 characters.
           </p>
         ) : null}
         <CreateInvoiceForm />

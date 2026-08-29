@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { headers } from "next/headers";
+import { clientKey, rateLimit } from "@/lib/ratelimit";
 import { getInvoiceSummaries } from "@/lib/invoices";
 import { calendarDaysPastDue, getEscalationWithPromise } from "@/lib/escalation";
 import { isTone } from "@/lib/types";
@@ -9,6 +11,12 @@ export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   try {
+    const headerList = await headers();
+    const limit = await rateLimit(clientKey(headerList, "status"), 120, 60);
+    if (!limit.ok) {
+      return NextResponse.json({ invoices: [] }, { status: 429 });
+    }
+
     const body = (await request.json()) as { ids?: unknown };
     const ids = Array.isArray(body.ids)
       ? body.ids.filter((v): v is string => typeof v === "string").slice(0, 50)
