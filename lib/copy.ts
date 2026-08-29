@@ -6,6 +6,12 @@ type CopyArgs = {
   daysPastDue: number;
 };
 
+function sentenceCase(text: string): string {
+  const trimmed = text.trim();
+  if (!trimmed) return text;
+  return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+}
+
 export function templateCopy({ register, description, daysPastDue }: CopyArgs): string {
   const n = Math.max(0, daysPastDue);
   const days = n === 1 ? "1 day" : `${n} days`;
@@ -15,9 +21,9 @@ export function templateCopy({ register, description, daysPastDue }: CopyArgs): 
     case "firm":
       return `Following up on ${description}, now ${days} past due.`;
     case "cold":
-      return `${description} is ${days} overdue. Please confirm a payment date.`;
+      return `${sentenceCase(description)} is ${days} overdue. Please confirm a payment date.`;
     case "final":
-      return `Final notice. ${description} remains unpaid ${days} after the due date.`;
+      return `Final notice. ${sentenceCase(description)} remains unpaid ${days} after the due date.`;
   }
 }
 

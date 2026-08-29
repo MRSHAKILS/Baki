@@ -58,7 +58,7 @@ export function exampleInvoices(now = new Date()) {
       tone: "standard" as const,
       status: "paid" as const,
       paid_at: new Date(now.getTime() - 8 * DAY),
-      label: "Paid",
+      label: "paid — the ladder stopped",
     },
     {
       id: "bk_exdue2",
@@ -73,7 +73,7 @@ export function exampleInvoices(now = new Date()) {
       tone: "gentle" as const,
       status: "sent" as const,
       paid_at: null,
-      label: "Due in 2 days",
+      label: "due in 2 days — nothing has fired yet",
     },
     {
       id: "bk_exlate",
@@ -88,7 +88,7 @@ export function exampleInvoices(now = new Date()) {
       tone: "relentless" as const,
       status: "sent" as const,
       paid_at: null,
-      label: "12 days overdue",
+      label: "12 days overdue — read the final notice",
     },
   ];
 }

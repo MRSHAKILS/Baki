@@ -16,15 +16,34 @@ export default async function HomePage({
 
   return (
     <main className="mx-auto w-full max-w-[760px] px-6 py-14 sm:px-10 sm:py-20">
-      <header className="mb-12 flex items-baseline justify-between gap-6">
-        <div>
-          <p className="font-serif text-[40px] leading-none tracking-tight">Baki</p>
-          <p className="mt-3 max-w-md text-[15px] leading-relaxed text-surface/80">
-            Outstanding, still owed. Fill the form and send the public link. After the due date,
-            the invoice escalates in the tone you chose.
+      <header className="mb-14">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+          <div className="flex items-baseline gap-3">
+            <p className="font-serif text-[34px] leading-none tracking-tight">Baki</p>
+            <p className="text-[12px] text-muted">বাকি · outstanding, still owed</p>
+          </div>
+          <p className="shrink-0 text-[12px] text-muted">$9/month</p>
+        </div>
+
+        <h1 className="mt-10 max-w-[15ch] font-serif text-[44px] leading-[1.05] tracking-tight sm:text-[56px]">
+          Send an invoice link.
+        </h1>
+        <p className="mt-4 max-w-lg text-[16px] leading-relaxed text-surface/75">
+          Baki chases the client so you don&apos;t have to.
+        </p>
+
+        <div className="mt-10 border-t border-surface/15 pt-5">
+          <p className="text-[12px] tracking-[0.14em]">
+            <span className="text-due">CORDIAL</span>
+            <span className="text-muted"> → </span>
+            <span className="text-due">FIRM</span>
+            <span className="text-muted"> → </span>
+            <span className="text-overdue">COLD</span>
+            <span className="text-muted"> → </span>
+            <span className="text-overdue">FINAL</span>
+            <span className="text-muted"> · on a schedule you choose</span>
           </p>
         </div>
-        <p className="shrink-0 text-[13px] text-muted">$9/month</p>
       </header>
 
       <section>
@@ -36,9 +55,7 @@ export default async function HomePage({
           {examples.map((invoice) => (
             <li key={invoice.id} className="border-b border-surface/15 py-5">
               <Link href={`/invoice/${invoice.id}`} className="block">
-                <p className="text-[12px] tracking-[0.14em] text-muted uppercase">
-                  Example · {invoice.label}
-                </p>
+                <p className="text-[12px] tracking-[0.04em] text-muted">{invoice.label}</p>
                 <div className="mt-2 flex items-baseline justify-between gap-4">
                   <p className="font-serif text-[22px] leading-snug tracking-tight">
                     {invoice.description}

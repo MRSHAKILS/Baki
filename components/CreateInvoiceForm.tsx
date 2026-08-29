@@ -105,7 +105,7 @@ export function CreateInvoiceForm() {
       <div className="mt-10">
         <LadderPreview
           dueAt={dueDate}
-          description={description || "the work"}
+          description={description || "your project"}
           tone={tone}
           defaultOpen
           onToneChange={setTone}
