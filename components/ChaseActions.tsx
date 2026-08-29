@@ -4,18 +4,19 @@ import { useState } from "react";
 
 /**
  * Baki writes the reminder. You send it from wherever you already talk to the
- * client — which for most freelancers is WhatsApp, not SMTP.
+ * client — which for most freelancers here is WhatsApp, not SMTP.
  */
-export function ChaseActions({
+export function ChasePanel({
   message,
   clientName,
   description,
+  onClose,
 }: {
   message: string;
   clientName: string;
   description: string;
+  onClose: () => void;
 }) {
-  const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const full = `Hello ${clientName},\n\n${message}\n\nThank you.`;
@@ -34,28 +35,17 @@ export function ChaseActions({
     }
   }
 
-  if (!open) {
-    return (
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="text-[12px] tracking-[0.04em] text-muted underline underline-offset-4 hover:text-surface"
-      >
-        Chase
-      </button>
-    );
-  }
-
   return (
-    <div className="enter max-w-sm">
-      <p className="border-l-2 border-overdue pl-3 text-[13px] leading-relaxed text-surface/80">
+    <div className="enter flex flex-wrap items-start justify-between gap-x-10 gap-y-5 pb-6">
+      <div className="max-w-xl border-l-2 border-overdue pl-4">
+        <p className="text-[11px] tracking-[0.16em] text-muted uppercase">Ready to send</p>
         {full.split("\n\n").map((para, i) => (
-          <span key={i} className="block first:mt-0 [&:not(:first-child)]:mt-2">
+          <p key={i} className="mt-2 text-[14px] leading-relaxed text-surface/85">
             {para}
-          </span>
+          </p>
         ))}
-      </p>
-      <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2">
+      </div>
+      <div className="flex shrink-0 flex-wrap items-center gap-x-6 gap-y-2">
         <button
           type="button"
           onClick={copy}
@@ -79,7 +69,7 @@ export function ChaseActions({
         </a>
         <button
           type="button"
-          onClick={() => setOpen(false)}
+          onClick={onClose}
           className="text-[12px] text-muted underline underline-offset-4"
         >
           Close

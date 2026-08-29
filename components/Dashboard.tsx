@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { forgetAll, readHistory } from "@/lib/history";
 import { formatMoney } from "@/lib/format";
 import { CountUp } from "@/components/CountUp";
-import { ChaseActions } from "@/components/ChaseActions";
+import { ChasePanel } from "@/components/ChaseActions";
 import { estimateNetCents, FEE_TOTAL_PCT } from "@/lib/fees";
 
 const DEMO_IDS = ["bk_exlate", "bk_exdue2", "bk_expaid"];
@@ -60,6 +60,7 @@ function Stat({
 export function Dashboard() {
   const [rows, setRows] = useState<Row[] | null>(null);
   const [demo, setDemo] = useState(false);
+  const [chaseId, setChaseId] = useState<string | null>(null);
 
   function load(ids: string[], isDemo: boolean) {
     setDemo(isDemo);
@@ -142,8 +143,8 @@ export function Dashboard() {
             {sorted.map((row, i) => {
               const s = state(row);
               return (
+                <Fragment key={row.id}>
                 <tr
-                  key={row.id}
                   className="enter border-b border-surface/10 align-baseline"
                   style={{ ["--i" as string]: i + 3 }}
                 >
@@ -167,16 +168,31 @@ export function Dashboard() {
                   <td className="py-5 pr-6 text-right font-serif text-[19px] tracking-tight tabular-nums">
                     {formatMoney(row.amount_cents, row.currency)}
                   </td>
-                  <td className="py-5 align-top">
+                  <td className="py-5 text-right align-baseline">
                     {row.status !== "paid" && row.message ? (
-                      <ChaseActions
-                        message={row.message}
-                        clientName={row.client_name}
-                        description={row.description}
-                      />
+                      <button
+                        type="button"
+                        onClick={() => setChaseId(chaseId === row.id ? null : row.id)}
+                        className="whitespace-nowrap text-[12px] tracking-[0.04em] text-muted underline underline-offset-4 hover:text-surface"
+                      >
+                        {chaseId === row.id ? "Hide" : "Chase"}
+                      </button>
                     ) : null}
                   </td>
                 </tr>
+                {chaseId === row.id && row.message ? (
+                  <tr>
+                    <td colSpan={6} className="border-b border-surface/10">
+                      <ChasePanel
+                        message={row.message}
+                        clientName={row.client_name}
+                        description={row.description}
+                        onClose={() => setChaseId(null)}
+                      />
+                    </td>
+                  </tr>
+                ) : null}
+                </Fragment>
               );
             })}
           </tbody>
