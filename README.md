@@ -70,6 +70,35 @@ it. The document itself gets colder as the debt ages.
 
 ---
 
+## Baki writes it. You send it.
+
+Every follow-up on the overview has a **Chase** action. It reveals the exact wording for
+the stage that invoice has reached, addressed to that client, ready to **copy**, open in
+**WhatsApp**, or open in **email**.
+
+This is deliberate rather than a shortfall. Automated SMTP is the obvious build, but most
+freelancers in this market chase clients on WhatsApp, from their own number, in their own
+thread. Sending it for them would be less useful and less trusted. The hard part was never
+delivery — it was deciding what to say and when. Baki does that part.
+
+## What actually reaches you
+
+Payoneer does not let users hold a balance in Bangladesh, and money typically arrives via
+Payoneer and is withdrawn through a local partner such as upay. So the invoice total is
+not the number that matters to the freelancer.
+
+The overview shows an estimate of what survives the trip:
+
+```
+OUTSTANDING
+$6,600.00
+≈ $6,402.00 after Payoneer and upay fees (3%)
+```
+
+Published headline rates, not a quote — 2% receiving plus 1% withdrawal, defined in
+[`lib/fees.ts`](lib/fees.ts). The client always sees the gross amount; this estimate is
+for the freelancer alone.
+
 ## The escalation ladder
 
 Three tone tracks. The freelancer picks one when creating the invoice.
@@ -120,7 +149,8 @@ purpose:
 
 **Built:** invoice creation → public link · the client-facing invoice page with live
 overdue state · the escalation ladder, previewable in full · an overview of what you are
-owed · client-open tracking
+owed · client-open tracking · one-click chase via copy, WhatsApp or email · a net-of-fees
+estimate for Bangladeshi freelancers
 
 **Deliberately not built:** authentication, multi-currency, recurring invoices, PDF
 export, and real scheduled email delivery. The ladder is *shown* rather than *sent*,
