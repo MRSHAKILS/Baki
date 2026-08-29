@@ -69,7 +69,13 @@ export function OverdueClock({ dueAt, paid }: Props) {
 
   return (
     <div className="border-y border-rule py-8">
-      <p className={`text-[12px] tracking-[0.18em] uppercase ${color}`}>{label}</p>
+      <p
+        className={`text-[12px] tracking-[0.18em] uppercase ${color} ${
+          clock.kind === "overdue" ? "breathe" : ""
+        }`}
+      >
+        {label}
+      </p>
       <div className={`mt-4 flex flex-wrap gap-8 font-serif text-[28px] leading-none sm:text-[34px] ${color}`}>
         <Unit value={clock.days} label="days" />
         <Unit value={pad(clock.hours)} label="hours" />

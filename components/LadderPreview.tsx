@@ -110,6 +110,7 @@ export function LadderPreview({
             {stages.map((stage, index) => (
               <StageRow
                 key={`${tone}-${stage.day}`}
+                index={index}
                 stage={stage}
                 description={description}
                 active={activeIndex === index}
@@ -136,11 +137,13 @@ function StageRow({
   description,
   active,
   daysForCopy,
+  index = 0,
 }: {
   stage: LadderStage;
   description: string;
   active: boolean;
   daysForCopy: number;
+  index?: number;
 }) {
   const copy = templateCopy({
     register: stage.register,
@@ -151,7 +154,8 @@ function StageRow({
 
   return (
     <li
-      className={`border-t border-rule py-4 first:border-t-0 ${active ? "" : "opacity-70"}`}
+      style={{ ["--i" as string]: index }}
+      className={`enter border-t border-rule py-4 first:border-t-0 ${active ? "" : "opacity-70"}`}
     >
       <div className="grid gap-1 sm:grid-cols-[4.25rem_6.75rem_5.25rem_1fr] sm:gap-4 sm:items-baseline">
         <span className="text-[13px] text-muted">Day {stage.day}</span>

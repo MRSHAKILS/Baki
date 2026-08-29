@@ -35,16 +35,16 @@ export async function InvoiceDocument({ invoice, shareUrl }: Props) {
 
   return (
     <article className="bg-surface px-8 py-10 text-ink sm:px-14 sm:py-16">
-      <header className="flex items-baseline justify-between gap-4">
+      <header style={{ ["--i" as string]: 0 }} className="enter flex items-baseline justify-between gap-4">
         <Link href="/" className="font-serif text-[28px] leading-none tracking-tight">
           Baki
         </Link>
         <p className="text-[13px] text-muted">{invoice.id}</p>
       </header>
 
-      <div className="mt-8 h-px bg-ink" />
+      <div style={{ ["--i" as string]: 1 }} className="enter mt-8 h-px bg-ink" />
 
-      <div className="mt-8 grid gap-8 sm:grid-cols-2">
+      <div style={{ ["--i" as string]: 2 }} className="enter mt-8 grid gap-8 sm:grid-cols-2">
         <div>
           <p className="text-[12px] tracking-[0.16em] text-muted uppercase">From</p>
           <p className="mt-2 text-[16px]">{invoice.freelancer_name}</p>
@@ -57,12 +57,12 @@ export async function InvoiceDocument({ invoice, shareUrl }: Props) {
       </div>
 
       {shareUrl ? (
-        <div className="mt-8">
+        <div style={{ ["--i" as string]: 3 }} className="enter mt-8">
           <CopyLink url={shareUrl} />
         </div>
       ) : null}
 
-      <div className="mt-8 h-px bg-rule" />
+      <div style={{ ["--i" as string]: 4 }} className="enter mt-8 h-px bg-rule" />
 
       <p className="mt-8 max-w-xl text-[18px] leading-relaxed">{invoice.description}</p>
 
@@ -72,7 +72,7 @@ export async function InvoiceDocument({ invoice, shareUrl }: Props) {
       >
         {formatMoney(invoice.amount_cents, invoice.currency)}
       </p>
-      <div className={`mt-6 h-px w-24 ${ruleColor}`} />
+      <div style={{ ["--i" as string]: 5 }} className={`mt-6 h-px w-24 ${ruleColor}`} />
 
       <div className="mt-8 grid grid-cols-2 gap-8">
         <div>

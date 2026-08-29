@@ -68,3 +68,95 @@ input[type="number"] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
+
+/* ---------------------------------------------------------------
+   Motion. Short, small, and always ease-out — this is a document
+   about money, so nothing bounces and nothing slides very far.
+   Every rule lives inside no-preference, so reduced motion gets
+   the static page with no invisible content.
+   --------------------------------------------------------------- */
+
+a,
+button,
+tbody tr {
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    opacity 180ms ease;
+}
+
+tbody tr:hover {
+  background-color: color-mix(in srgb, var(--surface) 4%, transparent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes baki-rise {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes baki-draw {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes baki-breathe {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  /* Sequenced entrance. Set --i on each child to stagger. */
+  .enter {
+    opacity: 0;
+    animation: baki-rise 560ms cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+    animation-delay: calc(var(--i, 0) * 70ms);
+  }
+
+  /* Revealed when scrolled into view. */
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 620ms cubic-bezier(0.2, 0.7, 0.3, 1),
+      transform 620ms cubic-bezier(0.2, 0.7, 0.3, 1);
+    transition-delay: calc(var(--i, 0) * 70ms);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* A rule that draws itself in from the left. */
+  .draw {
+    transform-origin: left;
+    animation: baki-draw 700ms cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+    animation-delay: calc(var(--i, 0) * 70ms);
+  }
+
+  /* Only the live overdue marker breathes. Nothing else moves on its own. */
+  .breathe {
+    animation: baki-breathe 2600ms ease-in-out infinite;
+  }
+
+  a:hover,
+  button:hover {
+    opacity: 0.82;
+  }
+}

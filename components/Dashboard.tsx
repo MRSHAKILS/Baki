@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { forgetAll, readHistory } from "@/lib/history";
 import { formatMoney } from "@/lib/format";
+import { CountUp } from "@/components/CountUp";
 
 const DEMO_IDS = ["bk_exlate", "bk_exdue2", "bk_expaid"];
 
@@ -32,12 +33,22 @@ function state(row: Row): { text: string; tone: string } {
   return { text: days === 0 ? "Due today" : `Due in ${days} days`, tone: "text-due" };
 }
 
-function Stat({ label, value, tone }: { label: string; value: string; tone?: string }) {
+function Stat({
+  label,
+  cents,
+  tone,
+  index = 0,
+}: {
+  label: string;
+  cents: number;
+  tone?: string;
+  index?: number;
+}) {
   return (
-    <div className="border-t border-surface/15 pt-4">
+    <div className="enter border-t border-surface/15 pt-4" style={{ ["--i" as string]: index }}>
       <p className="text-[11px] tracking-[0.16em] text-muted uppercase">{label}</p>
       <p className={`mt-2 font-serif text-[30px] tracking-tight tabular-nums ${tone ?? ""}`}>
-        {value}
+        <CountUp cents={cents} />
       </p>
     </div>
   );
@@ -92,13 +103,14 @@ export function Dashboard() {
       ) : null}
 
       <div className="mb-14 grid gap-x-10 gap-y-8 sm:grid-cols-3">
-        <Stat label="Outstanding" value={formatMoney(outstanding)} />
+        <Stat label="Outstanding" cents={outstanding} index={0} />
         <Stat
           label={`Overdue · ${overdue.length}`}
-          value={formatMoney(overdueTotal)}
+          cents={overdueTotal}
           tone={overdueTotal > 0 ? "text-overdue" : undefined}
+          index={1}
         />
-        <Stat label="Collected" value={formatMoney(collected)} tone="text-paid" />
+        <Stat label="Collected" cents={collected} tone="text-paid" index={2} />
       </div>
 
       <div className="overflow-x-auto">
@@ -118,10 +130,14 @@ export function Dashboard() {
             </tr>
           </thead>
           <tbody>
-            {sorted.map((row) => {
+            {sorted.map((row, i) => {
               const s = state(row);
               return (
-                <tr key={row.id} className="border-b border-surface/10 align-baseline">
+                <tr
+                  key={row.id}
+                  className="enter border-b border-surface/10 align-baseline"
+                  style={{ ["--i" as string]: i + 3 }}
+                >
                   <td className="py-5 pr-6">
                     <Link href={`/invoice/${row.id}`} className="font-serif text-[19px] tracking-tight underline-offset-4 hover:underline">
                       {row.description}

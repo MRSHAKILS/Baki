@@ -10,7 +10,7 @@ export default async function HomePage() {
 
   return (
     <main className="mx-auto w-full max-w-[760px] px-6 py-14 sm:px-10 sm:py-20">
-      <header className="mb-14">
+      <header className="enter mb-14" style={{ ["--i" as string]: 0 }}>
         <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
           <div className="flex items-baseline gap-3">
             <p className="font-serif text-[34px] leading-none tracking-tight">Baki</p>
@@ -40,7 +40,7 @@ export default async function HomePage() {
         </div>
       </header>
 
-      <div className="mb-16 flex flex-wrap items-center gap-4">
+      <div className="enter mb-16 flex flex-wrap items-center gap-4" style={{ ["--i" as string]: 2 }}>
         <Link
           href="/new"
           className="bg-surface px-7 py-3 text-[13px] tracking-[0.1em] text-ink uppercase"
@@ -55,7 +55,7 @@ export default async function HomePage() {
         </Link>
       </div>
 
-      <section>
+      <section className="enter" style={{ ["--i" as string]: 3 }}>
         <h2 className="text-[12px] tracking-[0.18em] text-muted uppercase">Examples</h2>
         <p className="mt-3 max-w-md text-[14px] leading-relaxed text-surface/70">
           Three invoices to open as a client would. No form required.
