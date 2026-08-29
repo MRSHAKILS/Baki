@@ -15,6 +15,7 @@ type InvoiceRow = {
   tone: string;
   status: string;
   paid_at: string | Date | null;
+  promised_at?: string | Date | null;
 };
 
 const EXAMPLE_IDS = ["bk_expaid", "bk_exdue2", "bk_exlate"] as const;
@@ -40,6 +41,7 @@ function parseInvoice(row: InvoiceRow): Invoice {
     tone,
     status,
     paid_at: row.paid_at ? asDate(row.paid_at) : null,
+    promised_at: row.promised_at ? asDate(row.promised_at) : null,
   };
 }
 
