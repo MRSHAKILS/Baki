@@ -15,6 +15,8 @@ export type Invoice = {
   tone: Tone;
   status: Status;
   paid_at: Date | null;
+  views?: number;
+  last_viewed_at?: Date | null;
 };
 
 export function isTone(value: string): value is Tone {

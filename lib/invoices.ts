@@ -226,3 +226,32 @@ export async function markInvoicePaid(id: string): Promise<Invoice | null> {
 }
 
 export { EXAMPLE_IDS };
+
+/** Client opened the invoice. Owner previews (?new=1) are not counted. */
+export async function recordInvoiceView(id: string): Promise<void> {
+  if ((EXAMPLE_IDS as readonly string[]).includes(id)) return;
+  try {
+    const sql = await ensureDb();
+    await sql`
+      UPDATE invoices
+      SET views = COALESCE(views, 0) + 1, last_viewed_at = now()
+      WHERE id = ${id}
+    `;
+  } catch {
+    // View counting is never allowed to break the invoice page.
+  }
+}
+
+/** Status for a batch of ids, for the freelancer's local history list. */
+export async function getInvoiceSummaries(ids: string[]) {
+  if (ids.length === 0) return [];
+  const sql = await ensureDb();
+  const rows = await sql`
+    SELECT id, client_name, description, amount_cents, currency,
+           due_at, tone, status, paid_at, COALESCE(views, 0) AS views, last_viewed_at
+    FROM invoices
+    WHERE id = ANY(${ids})
+    ORDER BY issued_at DESC
+  `;
+  return rows;
+}

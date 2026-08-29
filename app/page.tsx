@@ -2,6 +2,7 @@ import { CreateInvoiceForm } from "@/components/CreateInvoiceForm";
 import { exampleInvoices, seedExamples } from "@/lib/invoices";
 import { formatMoney } from "@/lib/format";
 import Link from "next/link";
+import { YourInvoices } from "@/components/YourInvoices";
 
 export const dynamic = "force-dynamic";
 
@@ -45,6 +46,8 @@ export default async function HomePage({
           </p>
         </div>
       </header>
+
+      <YourInvoices />
 
       <section>
         <h2 className="text-[12px] tracking-[0.18em] text-muted uppercase">Examples</h2>

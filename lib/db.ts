@@ -37,6 +37,9 @@ export async function ensureDb(): Promise<Sql> {
     )
   `;
 
+  await sql`ALTER TABLE invoices ADD COLUMN IF NOT EXISTS views integer NOT NULL DEFAULT 0`;
+  await sql`ALTER TABLE invoices ADD COLUMN IF NOT EXISTS last_viewed_at timestamptz`;
+
   prepared = true;
   return sql;
 }
