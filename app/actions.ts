@@ -31,7 +31,7 @@ export async function createInvoice(formData: FormData) {
     !due_at ||
     !isTone(toneRaw)
   ) {
-    redirect("/?error=1");
+    redirect("/new?error=1");
   }
 
   const invoice = await createInvoiceRecord({

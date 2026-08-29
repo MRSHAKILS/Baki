@@ -1,18 +1,11 @@
-import { CreateInvoiceForm } from "@/components/CreateInvoiceForm";
 import { exampleInvoices, seedExamples } from "@/lib/invoices";
 import { formatMoney } from "@/lib/format";
 import Link from "next/link";
-import { YourInvoices } from "@/components/YourInvoices";
 
 export const dynamic = "force-dynamic";
 
-export default async function HomePage({
-  searchParams,
-}: {
-  searchParams: Promise<{ error?: string }>;
-}) {
+export default async function HomePage() {
   await seedExamples();
-  const params = await searchParams;
   const examples = exampleInvoices();
 
   return (
@@ -47,7 +40,20 @@ export default async function HomePage({
         </div>
       </header>
 
-      <YourInvoices />
+      <div className="mb-16 flex flex-wrap items-center gap-4">
+        <Link
+          href="/new"
+          className="bg-surface px-7 py-3 text-[13px] tracking-[0.1em] text-ink uppercase"
+        >
+          Create an invoice
+        </Link>
+        <Link
+          href="/dashboard"
+          className="px-1 py-3 text-[13px] tracking-[0.04em] text-muted underline underline-offset-[6px] hover:text-surface"
+        >
+          See the overview
+        </Link>
+      </div>
 
       <section>
         <h2 className="text-[12px] tracking-[0.18em] text-muted uppercase">Examples</h2>
@@ -76,20 +82,6 @@ export default async function HomePage({
         </ul>
       </section>
 
-      <section className="mt-16 bg-surface px-8 py-10 text-ink sm:px-12 sm:py-14">
-        <h1 className="font-serif text-[26px] tracking-tight">New invoice</h1>
-        <p className="mt-2 text-[14px] text-muted">
-          The client opens one URL. There is no account to create.
-        </p>
-        {params.error ? (
-          <p className="mt-4 text-[14px] text-overdue">
-            Check the fields and try again. Amount must be a number greater than zero.
-          </p>
-        ) : null}
-        <div className="mt-8">
-          <CreateInvoiceForm />
-        </div>
-      </section>
     </main>
   );
 }
