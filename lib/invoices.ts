@@ -229,9 +229,14 @@ export async function markInvoicePaid(id: string): Promise<Invoice | null> {
 
 export { EXAMPLE_IDS };
 
-/** Client opened the invoice. Owner previews (?new=1) are not counted. */
+/**
+ * Client opened the invoice. Owner previews (?new=1) are not counted.
+ *
+ * The example invoices count too. Anyone opening one is a real reader, and
+ * watching your own visit appear on the overview is the clearest possible
+ * demonstration of what the column is for.
+ */
 export async function recordInvoiceView(id: string): Promise<void> {
-  if ((EXAMPLE_IDS as readonly string[]).includes(id)) return;
   try {
     const sql = await ensureDb();
     await sql`
